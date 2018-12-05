@@ -26,35 +26,38 @@ class App extends React.Component {
 
     this.handleClick = this.handleClick.bind(this);
     this.handleChange = this.handleChange.bind(this);
+    this.save = this.save.bind(this);
   }
 
   //Need to build save function.
-  save() {
-
+  save(e) {
+    console.log('this is e.target', e.target)
+    console.log('this is this.state',this.state)
+    event.preventDefault();
   }
 
-  handleClick(e) {
-    e.preventDefault();
+  handleClick(event) {
+    event.preventDefault();
 
-    if (e.target.className === 'beginCheckOut') {
+    if (event.target.className === 'beginCheckOut') {
       this.setState({
         visibleForm: FormOne
       })
     }
 
-    if (e.target.className === 'completeFormOne') {
+    if (event.target.className === 'completeFormOne') {
       this.setState({
         visibleForm: FormTwo
       })
     }
 
-    if (e.target.className === 'completeFormTwo') {
+    if (event.target.className === 'completeFormTwo') {
       this.setState({
         visibleForm: FormThree
       })
     }
 
-    if (e.target.className === 'completeFormThree') {
+    if (event.target.className === 'completeFormThree') {
       this.setState({
         visibleForm: FormsCompleted
       })
@@ -133,7 +136,8 @@ class App extends React.Component {
         cvv={this.state.cvv}
         billingZip={this.state.billingZip}
         handleChange={this.handleChange}
-        handleClick={this.handleClick} />
+        handleClick={this.handleClick}
+        save={this.save} />
     }
 
     if (VisibleForm === FormsCompleted) {
@@ -285,7 +289,7 @@ const FormThree = (props) => {
           type="submit"
           value="Submit"
           className="completeFormThree"
-          onClick={props.handleClick}>Submit</button>
+          onClick={props.save}>Submit</button>
       </form>
     </div>
   )
