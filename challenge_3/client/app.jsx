@@ -1,3 +1,8 @@
+/*to complete now need to send the post request to the
+server once all the info has been added to the state */
+
+
+
 class App extends React.Component {
   constructor(props) {
     super(props);
@@ -7,21 +12,25 @@ class App extends React.Component {
       name: '',
       email: '',
       password: '',
-      addressLineOne: '',
-      AddressLine1: '',
-      AddressLine2: '',
-      City: '',
-      State: '',
-      Zip: '',
-      Phone: '',
+      addressLine1: '',
+      addressLine2: '',
+      city: '',
+      state: '',
+      zip: '',
+      phone: '',
       CCNumber: '',
-      ExpDate: '',
-      CVV: '',
-      BillingZip: ''
+      expDate: '',
+      cvv: '',
+      billingZip: ''
     }
 
     this.handleClick = this.handleClick.bind(this);
     this.handleChange = this.handleChange.bind(this);
+  }
+
+  //Need to build save function.
+  save() {
+
   }
 
   handleClick(e) {
@@ -31,18 +40,25 @@ class App extends React.Component {
       this.setState({
         visibleForm: FormOne
       })
-    } else if (e.target.className === 'completeFormOne') {
+    }
+
+    if (e.target.className === 'completeFormOne') {
       this.setState({
         visibleForm: FormTwo
       })
-    } else if (e.target.className === 'completeFormTwo') {
+    }
+
+    if (e.target.className === 'completeFormTwo') {
       this.setState({
         visibleForm: FormThree
       })
-    } else if (e.target.className === 'completeFormThree') {
+    }
+
+    if (e.target.className === 'completeFormThree') {
       this.setState({
         visibleForm: FormsCompleted
       })
+
     }
   }
 
@@ -51,17 +67,16 @@ class App extends React.Component {
     let name = event.target.name;
     let email = event.target.email;
     let password = event.target.password;
-    let addressLine1 = event.target.AddressLine1;
-    let addressLine2 = event.target.AddressLine2;
-    let city = event.target.City;
-    let state = event.target.State;
-    let zip = event.target.Zip;
-    let phone = event.target.Phone;
+    let addressLine1 = event.target.addressLine1;
+    let addressLine2 = event.target.addressLine2;
+    let city = event.target.city;
+    let state = event.target.state;
+    let zip = event.target.zip;
+    let phone = event.target.phone;
     let CCNumber = event.target.CCNumber;
-    let expDate = event.target.ExpDate;
-    let cvv = event.target.CVV;
-    let billingZip = event.target.BillingZip;
-
+    let expDate = event.target.expDate;
+    let cvv = event.target.cvv;
+    let billingZip = event.target.billingZip;
 
     this.setState({
       [name]: value,
@@ -98,28 +113,33 @@ class App extends React.Component {
         handleChange={this.handleChange}
         handleClick={this.handleClick} />
     }
+
     if (VisibleForm === FormTwo) {
       currentForm = <FormTwo
-        addressLine1={this.state.AddressLine1} addressLine2={this.state.AddressLine2}
-        city={this.state.City}
-        state={this.state.State}
-        zip={this.state.Zip}
+        addressLine1={this.state.addressLine1}
+        addressLine2={this.state.addressLine2}
+        city={this.state.city}
+        state={this.state.state}
+        zip={this.state.zip}
         phone={this.state.phone}
         handleChange={this.handleChange}
         handleClick={this.handleClick} />
     }
+
     if (VisibleForm === FormThree) {
       currentForm = <FormThree
-      CCNumber={this.state.CCNumber}
-      expDate={this.state.expDate}
-      cvv={this.state.cvv}
-      billingZip={this.state.billingZip}
-      handleChange={this.handleChange}
-      handleClick={this.handleClick}/>
+        CCNumber={this.state.CCNumber}
+        expDate={this.state.expDate}
+        cvv={this.state.cvv}
+        billingZip={this.state.billingZip}
+        handleChange={this.handleChange}
+        handleClick={this.handleClick} />
     }
+
     if (VisibleForm === FormsCompleted) {
       currentForm = <FormsCompleted />
     }
+
     return (
       <div className="container">
         <h1 className="site-heading">Checkout Page</h1>
@@ -155,18 +175,22 @@ const FormOne = (props) => {
         <input
           type="text"
           name="name"
-          value={props.name} onChange={props.handleChange}
+          value={props.name}
+          onChange={props.handleChange}
         />
         <label>Email:</label>
         <input
           type="text"
           name="email"
-          value={props.email} onChange={props.handleChange}
+          value={props.email}
+          onChange={props.handleChange}
         />
         <label>Password:</label>
         <input
           type="text"
-          name="password" />
+          name="password"
+          value={props.password}
+          onChange={props.handleChange} />
         <button
           type="submit"
           value="Submit"
@@ -182,18 +206,42 @@ const FormTwo = (props) => {
   return (
     <div>
       <form>
-        <label>NameTOW:</label>
+        <label>Address Line 1:</label>
         <input
           type="text"
-          name="name" />
-        <label>EmailSF:</label>
+          name="addressLine1"
+          value={props.addressLine1}
+          onChange={props.handleChange} />
+        <label>Address Line 2:</label>
         <input
           type="text"
-          name="email" />
-        <label>PasswordDFSD:</label>
+          name="addressLine2"
+          value={props.addressLine2}
+          onChange={props.handleChange} />
+        <label>City:</label>
         <input
           type="text"
-          name="password" />
+          name="city"
+          value={props.city}
+          onChange={props.handleChange} />
+        <label>State:</label>
+        <input
+          type="text"
+          name="state"
+          value={props.state}
+          onChange={props.handleChange} />
+        <label>Zip Code:</label>
+        <input
+          type="text"
+          name="zip"
+          value={props.zip}
+          onChange={props.handleChange} />
+        <label>Phone Number:</label>
+        <input
+          type="text"
+          name="phone"
+          value={props.phone}
+          onChange={props.handleChange} />
         <button
           type="submit"
           value="Submit"
@@ -209,18 +257,30 @@ const FormThree = (props) => {
   return (
     <div>
       <form>
-        <label>TOW:</label>
+        <label>Credit Card Number:</label>
         <input
           type="text"
-          name="name" />
-        <label>lSF:</label>
+          name="CCNumber"
+          value={props.CCNumber}
+          onChange={props.handleChange} />
+        <label>Expiration Date:</label>
         <input
           type="text"
-          name="email" />
-        <label>PasswordDFSD:</label>
+          name="expDate"
+          value={props.expDate}
+          onChange={props.handleChange} />
+        <label>CVV:</label>
         <input
           type="text"
-          name="password" />
+          name="cvv"
+          value={props.cvv}
+          onChange={props.handleChange} />
+        <label>Billing Zip Code:</label>
+        <input
+          type="text"
+          name="billingZip"
+          value={props.billingZip}
+          onChange={props.handleChange} />
         <button
           type="submit"
           value="Submit"
@@ -244,6 +304,3 @@ const FormsCompleted = (props) => {
 
 
 ReactDOM.render(<App />, document.getElementById('root'))
-
-
-//need to send to the server the information I'm receiving from the forms
