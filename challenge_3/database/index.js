@@ -10,7 +10,6 @@ db.once('open', function () {
 
 let creditCardInfo = new Schema({
   CCNumber: Number,
-  Zip: Number,
   ExpDate: Number,
   CVV: Number,
   BillingZip: Number
@@ -40,7 +39,7 @@ let userA = new Repo({
   'State': 'mile',
   'Zip': 8980,
   'Phone': 90887900,
-  'CreditCard': [{'CCNumber': 12343213440302, 'Zip': 10010, 'ExpDate': 9809, 'CVV': 654, 'BillingZip': 940}]
+  'CreditCard': [{'CCNumber': 12343213440302, 'ExpDate': 9809, 'CVV': 654, 'BillingZip': 940}]
 })
 
 userA.save(function (err) {
