@@ -16,6 +16,7 @@ let creditCardInfo = new Schema({
 })
 
 let dataSchema = new Schema({
+  username: String,
   Name: String,
   Email: String,
   AddressLine1: String,
@@ -30,23 +31,39 @@ let dataSchema = new Schema({
 
 let Repo = mongoose.model('Repo', dataSchema);
 
-let userA = new Repo({
-  'name': 'mile',
-  'Email': 'mile',
-  'AddressLine1': 'mile',
-  'AddressLine2': 'mile',
-  'City': 'mile',
-  'State': 'mile',
-  'Zip': 8980,
-  'Phone': 90887900,
-  'CreditCard': [{'CCNumber': 12343213440302, 'ExpDate': 9809, 'CVV': 654, 'BillingZip': 940}]
-})
 
-userA.save(function (err) {
-  if (err) {
-    console.log('err')
-  } else {
-    console.log('saved')
-  }
-});
+const newUser = function (data, err) {
+  // console.log(data, 'this is data')
+  var user = new Repo({
+    'username': data.name,
+    'name': data.name,
+    'Email': data.email,
+    'AddressLine1': data.addressLine1,
+    'AddressLine2': data.addressLine1,
+    'City': data.city,
+    'State': data.state,
+    'Zip': data.zip,
+    'Phone': data.phone,
+    'CreditCard': [{ 'CCNumber': data.CCNumber, 'ExpDate': data.expDate, 'CVV': data.cvv, 'BillingZip': data.billingZip }]
+  })
 
+  user.save(function (err) {
+    if (err) {
+      console.log('the data fields some data fields are not correct, make sure they are numbers')
+    } else {
+      console.log('saved')
+    }
+  });
+};
+
+
+const findInfo = function () {
+  // data.find({});
+}
+
+
+findInfo();
+
+
+module.exports.newUser = newUser;
+module.exports.findInfo = findInfo;

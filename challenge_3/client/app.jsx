@@ -1,14 +1,10 @@
-/*to complete now need to send the post request to the
-server once all the info has been added to the state */
-
-
-
 class App extends React.Component {
   constructor(props) {
     super(props);
 
     this.state = {
       visibleForm: BeginCheckOut,
+      username: '',
       name: '',
       email: '',
       password: '',
@@ -27,13 +23,59 @@ class App extends React.Component {
     this.handleClick = this.handleClick.bind(this);
     this.handleChange = this.handleChange.bind(this);
     this.save = this.save.bind(this);
+    this.pullInfo = this.pullInfo.bind(this);
   }
 
-  //Need to build save function.
-  save(e) {
-    console.log('this is e.target', e.target)
-    console.log('this is this.state',this.state)
-    event.preventDefault();
+
+  pullInfo() {
+    // let username = this.state.email;
+    fetch("http://localhost:3000", {
+      method: 'GET',
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+      },
+      // body: JSON.stringify({username})
+    })
+      .then(res => res.json())
+      .then(
+        (result) => {
+          console.log(result, 'this is result')
+        })
+      .catch(err => {
+        console.log('error')
+      })
+  }
+
+  save(event) {
+    this.handleClick(event)
+    fetch("http://localhost:3000", {
+      method: 'POST',
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+      },
+
+      body: JSON.stringify({
+        username: this.state.email,
+        name: this.state.name,
+        email: this.state.email,
+        password: this.state.password,
+        addressLine1: this.state.addressLine1,
+        addressLine2: this.state.addressLine2,
+        city: this.state.city,
+        state: this.state.state,
+        zip: this.state.zip,
+        phone: this.state.phone,
+        CCNumber: this.state.CCNumber,
+        expDate: this.state.expDate,
+        cvv: this.state.cvv,
+        billingZip: this.state.billingZip
+      })
+    })
+      .catch(err => {
+        console.log('error')
+      })
   }
 
   handleClick(event) {
@@ -67,6 +109,7 @@ class App extends React.Component {
 
   handleChange(event) {
     let value = event.target.value;
+    let username = event.target.email;
     let name = event.target.name;
     let email = event.target.email;
     let password = event.target.password;
@@ -81,9 +124,11 @@ class App extends React.Component {
     let cvv = event.target.cvv;
     let billingZip = event.target.billingZip;
 
+
     this.setState({
       [name]: value,
       [email]: value,
+      [username]: value,
       [password]: value,
       [addressLine1]: value,
       [addressLine2]: value,
@@ -141,7 +186,20 @@ class App extends React.Component {
     }
 
     if (VisibleForm === FormsCompleted) {
-      currentForm = <FormsCompleted />
+      currentForm = <FormsCompleted
+      name={this.state.name}
+      email={this.state.email}
+      password={this.state.password}
+      addressLine1={this.state.addressLine1}
+      addressLine2={this.state.addressLine2}
+      city={this.state.city}
+      state={this.state.state}
+      zip={this.state.zip}
+      phone={this.state.phone}
+      CCNumber={this.state.CCNumber}
+      expDate={this.state.expDate}
+      cvv={this.state.cvv}
+      billingZip={this.state.billingZip} />
     }
 
     return (
@@ -300,8 +358,31 @@ const FormsCompleted = (props) => {
   return (
     <div>
       <p>
-        Thanks form completing your transaction!
+        Thanks form completing your transaction, here is a summary of your transaction:
     </p>
+      <label>Name:</label>
+      <div className="summary">{props.name}</div>
+      <label>Email:</label>
+      <div className="summary">{props.email}</div>
+      <label>Address One:</label>
+      <div className="summary">{props.addressLine1}</div>
+      <label>Address Two:</label>
+      <div className="summary">{props.addressLine2}</div>
+      <label>City:</label>
+      <div className="summary">{props.city}</div>
+      <label>State:</label>
+      <div className="summary">{props.state}</div>
+      <label>Zip:</label>
+      <div className="summary">{props.zip}</div>
+      <label>Phone:</label>
+      <div className="summary">{props.phone}</div>
+      <label>Billing Zip:</label>
+      <div className="summary">{props.billingZip}</div>
+      <button
+        type="submit"
+        value="Submit"
+        className="formsCompleted"
+        onClick={props.pullInfo}>Purchase</button>
     </div>
   )
 }
