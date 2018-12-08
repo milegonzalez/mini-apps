@@ -13,6 +13,8 @@ let newGame = function () {
     squares[i].innerText = '';
     squares[i].addEventListener('click', XorO, true);
   }
+  let winnerText = document.getElementsByClassName("scoreInfo");
+  winnerText[0].innerText = '';
 }
 
 let disableSquare = function () {
