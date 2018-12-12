@@ -1,0 +1,28 @@
+table {
+  /* border-collapse:collapse; */
+  background-color: #2b7cce;
+  border: 1px solid #20578e;
+}
+
+td {
+  height: 50px;
+  width: 50px;
+  border-left: 1px solid #20578e;
+  border-right: 1px solid #20578e;
+  border-radius: 50%;
+  background-color: white
+}
+
+body {
+  font-family: Arial, Helvetica, sans-serif;
+  padding-top: 10px;
+  padding-left: 10px;
+}
+
+.Red {
+  background-color: red
+}
+
+.Yellow {
+  background-color: yellow;
+}
