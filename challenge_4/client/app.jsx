@@ -1,96 +1,144 @@
 import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
-// import Board from './src/Board'
 
 class App extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      value: 0,
       activePlayer: 'Red',
-      plays: {
-        Red: [],
-        Yellow: []
-      }
+      redPlays: [],
+      yellowPlays: []
+
     };
     this.placePiece = this.placePiece.bind(this);
+    this.horizontalWin = this.horizontalWin.bind(this);
+    this.winningGame = this.winningGame.bind(this);
+  }
+
+
+  placePiece(e, coordinates) {
+    if (this.state.activePlayer === 'Red') {
+      const addMoveToPlay = this.state.redPlays.concat([coordinates]);
+      this.setState({
+        activePlayer: 'Yellow',
+        redPlays: addMoveToPlay
+      })
+    } else {
+      const addMoveToPlay = this.state.yellowPlays.concat([coordinates]);
+      this.setState({
+        activePlayer: 'Red',
+        yellowPlays: addMoveToPlay
+      })
+    }
+    this.winningGame();
+  }
+
+  winningGame () {
+    let redHorizontal = this.horizontalWin(this.state.redPlays)
+    if (redHorizontal === 'winner') {
+      this.setState({winner: 'Red is the winner!'});
+    }
+    let yellowHorizontal = this.horizontalWin(this.state.yellowPlays)
+    if (yellowHorizontal === 'winner') {
+      this.setState({winner: 'Yellow is the winner!'});
+    }
+    let redVertical = this.verticalWin(this.state.redPlays)
+    if (redVertical === 'winner') {
+      this.setState({winner: 'Red is the winner!'});
+    }
+    let yellowVertical = this.verticalWin(this.state.yellowPlays)
+    if (yellowVertical === 'winner') {
+      this.setState({winner: 'Yellow is the winner!'});
+    }
 
   }
 
-  placePiece(e) {
-    const coordinates = e.target;
-    console.log('coordinates', coordinates);
-
-    if (this.state.activePlayer === 'Red') {
-      this.setState({
-        activePlayer: 'Yellow'
-      })
-    } else {
-      this.setState({
-        activePlayer: 'Red'
-      })
+  horizontalWin (array) {
+    const sorted = array.sort()
+    let output = 'horizontal no winner'
+    for (let i = 0; i < sorted.length - 3; i++) {
+      let firstTuple = sorted[i]
+      let lastTuple = sorted[i + 3]
+      if (firstTuple[0] === lastTuple[0] && firstTuple[1] === (lastTuple[1] - 3)) {
+        output = 'winner';
+      }
     }
+    return output;
+  }
+
+  verticalWin (array) {
+    const sorted = array.sort()
+    let output = 'vertical no winner'
+    for (let i = 0; i < sorted.length - 3; i++) {
+      let firstTuple = sorted[i]
+      let lastTuple = sorted[i + 3]
+      if (firstTuple[1] === lastTuple[1] && firstTuple[0] === (lastTuple[0] - 3)) {
+        output = 'winner';
+      }
+    }
+    return output;
   }
 
   render() {
     return (
       <div>
         <div>Connect 4</div>
+        <span>{this.state.winner}</span>
         <table>
           <tbody>
             <tr>
-              <Square name={'1,1'} activePlayer={this.state.activePlayer} handleClick={(e) => this.placePiece(e)}/>
-              <Square activePlayer={this.state.activePlayer} handleClick={(e) => this.placePiece(e)} name={'1,2'} />
-              <Square activePlayer={this.state.activePlayer} handleClick={(e) => this.placePiece(e)} name={'1,3'} />
-              <Square activePlayer={this.state.activePlayer} handleClick={(e) => this.placePiece(e)} name={'1,4'} />
-              <Square activePlayer={this.state.activePlayer} handleClick={(e) => this.placePiece(e)} name={'1,5'} />
-              <Square activePlayer={this.state.activePlayer} handleClick={(e) => this.placePiece(e)} name={'1,6'} />
-              <Square activePlayer={this.state.activePlayer} handleClick={(e) => this.placePiece(e)} name={'1,7'} />
+              <Square activePlayer={this.state.activePlayer} handleClick={(e) => this.placePiece(e, [1,1])} />
+              <Square activePlayer={this.state.activePlayer} handleClick={(e) => this.placePiece(e, [1,2])} />
+              <Square activePlayer={this.state.activePlayer} handleClick={(e) => this.placePiece(e, [1,3])} />
+              <Square activePlayer={this.state.activePlayer} handleClick={(e) => this.placePiece(e, [1,4])} />
+              <Square activePlayer={this.state.activePlayer} handleClick={(e) => this.placePiece(e, [1,5])} />
+              <Square activePlayer={this.state.activePlayer} handleClick={(e) => this.placePiece(e, [1,6])} />
+              <Square activePlayer={this.state.activePlayer} handleClick={(e) => this.placePiece(e, [1,7])} />
             </tr>
             <tr>
-              <Square activePlayer={this.state.activePlayer} handleClick={(e) => this.placePiece(e)} name={'2,1'} />
-              <Square activePlayer={this.state.activePlayer} handleClick={(e) => this.placePiece(e)} name={'2,2'} />
-              <Square activePlayer={this.state.activePlayer} handleClick={(e) => this.placePiece(e)} name={'2,3'} />
-              <Square activePlayer={this.state.activePlayer} handleClick={(e) => this.placePiece(e)} name={'2,4'} />
-              <Square activePlayer={this.state.activePlayer} handleClick={(e) => this.placePiece(e)} name={'2,5'} />
-              <Square activePlayer={this.state.activePlayer} handleClick={(e) => this.placePiece(e)} name={'2,6'} />
-              <Square activePlayer={this.state.activePlayer} handleClick={(e) => this.placePiece(e)} name={'2,7'} />
+              <Square activePlayer={this.state.activePlayer} handleClick={(e) => this.placePiece(e, [2,1])} />
+              <Square activePlayer={this.state.activePlayer} handleClick={(e) => this.placePiece(e, [2,2])} />
+              <Square activePlayer={this.state.activePlayer} handleClick={(e) => this.placePiece(e, [2,3])} />
+              <Square activePlayer={this.state.activePlayer} handleClick={(e) => this.placePiece(e, [2,4])} />
+              <Square activePlayer={this.state.activePlayer} handleClick={(e) => this.placePiece(e, [2,5])} />
+              <Square activePlayer={this.state.activePlayer} handleClick={(e) => this.placePiece(e, [2,6])} />
+              <Square activePlayer={this.state.activePlayer} handleClick={(e) => this.placePiece(e, [2,7])} />
             </tr>
             <tr>
-              <Square activePlayer={this.state.activePlayer} handleClick={(e) => this.placePiece(e)} name={'3,1'} />
-              <Square activePlayer={this.state.activePlayer} handleClick={(e) => this.placePiece(e)} name={'3,2'} />
-              <Square activePlayer={this.state.activePlayer} handleClick={(e) => this.placePiece(e)} name={'3,3'} />
-              <Square activePlayer={this.state.activePlayer} handleClick={(e) => this.placePiece(e)} name={'3,4'} />
-              <Square activePlayer={this.state.activePlayer} handleClick={(e) => this.placePiece(e)} name={'3,5'} />
-              <Square activePlayer={this.state.activePlayer} handleClick={(e) => this.placePiece(e)} name={'3,6'} />
-              <Square activePlayer={this.state.activePlayer} handleClick={(e) => this.placePiece(e)} name={'3,7'} />
+              <Square activePlayer={this.state.activePlayer} handleClick={(e) => this.placePiece(e, [3,1])} />
+              <Square activePlayer={this.state.activePlayer} handleClick={(e) => this.placePiece(e, [3,2])} />
+              <Square activePlayer={this.state.activePlayer} handleClick={(e) => this.placePiece(e, [3,3])} />
+              <Square activePlayer={this.state.activePlayer} handleClick={(e) => this.placePiece(e, [3,4])} />
+              <Square activePlayer={this.state.activePlayer} handleClick={(e) => this.placePiece(e, [3,5])} />
+              <Square activePlayer={this.state.activePlayer} handleClick={(e) => this.placePiece(e, [3,6])} />
+              <Square activePlayer={this.state.activePlayer} handleClick={(e) => this.placePiece(e, [3,7])} />
             </tr>
             <tr>
-              <Square activePlayer={this.state.activePlayer} handleClick={(e) => this.placePiece(e)} name={'4,1'} />
-              <Square activePlayer={this.state.activePlayer} handleClick={(e) => this.placePiece(e)} name={'4,2'} />
-              <Square activePlayer={this.state.activePlayer} handleClick={(e) => this.placePiece(e)} name={'4,3'} />
-              <Square activePlayer={this.state.activePlayer} handleClick={(e) => this.placePiece(e)} name={'4,4'} />
-              <Square activePlayer={this.state.activePlayer} handleClick={(e) => this.placePiece(e)} name={'4,5'} />
-              <Square activePlayer={this.state.activePlayer} handleClick={(e) => this.placePiece(e)} name={'4,6'} />
-              <Square activePlayer={this.state.activePlayer} handleClick={(e) => this.placePiece(e)} name={'4,7'} />
+              <Square activePlayer={this.state.activePlayer} handleClick={(e) => this.placePiece(e, [4,1])} />
+              <Square activePlayer={this.state.activePlayer} handleClick={(e) => this.placePiece(e, [4,2])} />
+              <Square activePlayer={this.state.activePlayer} handleClick={(e) => this.placePiece(e, [4,3])} />
+              <Square activePlayer={this.state.activePlayer} handleClick={(e) => this.placePiece(e, [4,4])} />
+              <Square activePlayer={this.state.activePlayer} handleClick={(e) => this.placePiece(e, [4,5])} />
+              <Square activePlayer={this.state.activePlayer} handleClick={(e) => this.placePiece(e, [4,6])} />
+              <Square activePlayer={this.state.activePlayer} handleClick={(e) => this.placePiece(e, [4,7])} />
             </tr>
             <tr>
-              <Square activePlayer={this.state.activePlayer} handleClick={(e) => this.placePiece(e)} name={'5,1'} />
-              <Square activePlayer={this.state.activePlayer} handleClick={(e) => this.placePiece(e)} name={'5,2'} />
-              <Square activePlayer={this.state.activePlayer} handleClick={(e) => this.placePiece(e)} name={'5,3'} />
-              <Square activePlayer={this.state.activePlayer} handleClick={(e) => this.placePiece(e)} name={'5,4'} />
-              <Square activePlayer={this.state.activePlayer} handleClick={(e) => this.placePiece(e)} name={'5,5'} />
-              <Square activePlayer={this.state.activePlayer} handleClick={(e) => this.placePiece(e)} name={'5,6'} />
-              <Square activePlayer={this.state.activePlayer} handleClick={(e) => this.placePiece(e)} name={'5,7'} />
+              <Square activePlayer={this.state.activePlayer} handleClick={(e) => this.placePiece(e, [5, 1])} />
+              <Square activePlayer={this.state.activePlayer} handleClick={(e) => this.placePiece(e, [5, 2])} />
+              <Square activePlayer={this.state.activePlayer} handleClick={(e) => this.placePiece(e, [5, 3])} />
+              <Square activePlayer={this.state.activePlayer} handleClick={(e) => this.placePiece(e, [5, 4])} />
+              <Square activePlayer={this.state.activePlayer} handleClick={(e) => this.placePiece(e, [5, 5])} />
+              <Square activePlayer={this.state.activePlayer} handleClick={(e) => this.placePiece(e, [5, 6])} />
+              <Square activePlayer={this.state.activePlayer} handleClick={(e) => this.placePiece(e, [5, 7])} />
             </tr>
             <tr>
-              <Square activePlayer={this.state.activePlayer} handleClick={(e) => this.placePiece(e)} name={'6,1'} />
-              <Square activePlayer={this.state.activePlayer} handleClick={(e) => this.placePiece(e)} name={'6,2'} />
-              <Square activePlayer={this.state.activePlayer} handleClick={(e) => this.placePiece(e)} name={'6,3'} />
-              <Square activePlayer={this.state.activePlayer} handleClick={(e) => this.placePiece(e)} name={'6,4'} />
-              <Square activePlayer={this.state.activePlayer} handleClick={(e) => this.placePiece(e)} name={'6,5'} />
-              <Square activePlayer={this.state.activePlayer} handleClick={(e) => this.placePiece(e)} name={'6,6'} />
-              <Square activePlayer={this.state.activePlayer} handleClick={(e) => this.placePiece(e)} name={'6,7'} />
+              <Square activePlayer={this.state.activePlayer} handleClick={(e) => this.placePiece(e, [6, 1])} />
+              <Square activePlayer={this.state.activePlayer} handleClick={(e) => this.placePiece(e, [6, 2])} />
+              <Square activePlayer={this.state.activePlayer} handleClick={(e) => this.placePiece(e, [6, 3])} />
+              <Square activePlayer={this.state.activePlayer} handleClick={(e) => this.placePiece(e, [6, 4])} />
+              <Square activePlayer={this.state.activePlayer} handleClick={(e) => this.placePiece(e, [6, 5])} />
+              <Square activePlayer={this.state.activePlayer} handleClick={(e) => this.placePiece(e, [6, 6])} />
+              <Square activePlayer={this.state.activePlayer} handleClick={(e) => this.placePiece(e, [6, 7])} />
             </tr>
           </tbody>
         </table>
@@ -110,20 +158,17 @@ class Square extends Component {
   }
 
   handleChange(e) {
-    // console.log(e.target)
     if (this.state.className) {
       alert('Invalid Move!');
       return;
     } else {
-      // this will adjust the state's classname
       this.setState({
         className: this.props.activePlayer
       })
-      // and then call the next function
+
       this.props.handleClick(e);
     }
   }
-
 
   render() {
     return (
